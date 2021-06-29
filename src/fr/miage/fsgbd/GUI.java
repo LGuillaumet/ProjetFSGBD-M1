@@ -6,7 +6,12 @@ import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.*;
+
 import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author Galli Gregory, Mopolo Moke Gabriel
@@ -14,9 +19,13 @@ import java.util.ArrayList;
 public class GUI extends JFrame implements ActionListener {
     TestInteger testInt = new TestInteger();
     BTreePlus<Integer> bInt;
-    private JButton buttonClean, buttonRemove, buttonLoad, buttonSave, buttonAddMany, buttonAddItem, buttonRefresh;
+    private JButton buttonClean, buttonRemove, buttonLoad, buttonCustomLoad, buttonSave, buttonAddMany, buttonAddItem, buttonRefresh;
     private JTextField txtNbreItem, txtNbreSpecificItem, txtU, txtFile, removeSpecific;
     private final JTree tree = new JTree();
+
+    private final String customFile = "sample.csv";
+
+    //private static String[] columnNames = {"nbIdentite","prenom","nom"};
 
     public GUI() {
         super();
@@ -73,6 +82,31 @@ public class GUI extends JFrame implements ActionListener {
             } else if (e.getSource() == buttonRemove) {
                 bInt.removeValeur(Integer.parseInt(removeSpecific.getText()));
             }
+            else if (e.getSource() == buttonCustomLoad) {
+                BufferedReader reader;
+                try {
+                    reader = new BufferedReader(new FileReader(customFile));
+                    String currentLine = reader.readLine();
+                            while (currentLine != null) {
+                                String[] splitted = currentLine.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+                                Integer index = Integer.valueOf(splitted[0]);
+                                Integer key = Integer.valueOf(splitted[1]);
+
+                                // read next line
+                                currentLine = reader.readLine();
+                            bInt.addValeur(key,index);
+                        }
+                        // line is not visible here.
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+
+
+                }
+
+
+
+
         }
 
         tree.setModel(new DefaultTreeModel(bInt.bArbreToJTree()));
@@ -101,7 +135,7 @@ public class GUI extends JFrame implements ActionListener {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(0, 5, 2, 0);
 
-        JLabel labelU = new JLabel("Nombre max de cl?s par noeud (2m): ");
+        JLabel labelU = new JLabel("Nombre max de cles par noeud (2m): ");
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 1;
@@ -126,7 +160,7 @@ public class GUI extends JFrame implements ActionListener {
         pane1.add(txtNbreItem, c);
 
 
-        buttonAddMany = new JButton("Ajouter n ?l?ments al?atoires ? l'arbre");
+        buttonAddMany = new JButton("Ajouter n elements aleatoires ? l'arbre");
         c.gridx = 2;
         c.gridy = 2;
         c.weightx = 1;
@@ -147,7 +181,7 @@ public class GUI extends JFrame implements ActionListener {
         c.gridwidth = 1;
         pane1.add(txtNbreSpecificItem, c);
 
-        buttonAddItem = new JButton("Ajouter l'?l?ment");
+        buttonAddItem = new JButton("Ajouter l'element");
         c.gridx = 2;
         c.gridy = 3;
         c.weightx = 1;
@@ -203,6 +237,13 @@ public class GUI extends JFrame implements ActionListener {
         c.gridwidth = 1;
         pane1.add(buttonLoad, c);
 
+        buttonCustomLoad = new JButton("Charger fichier custom sample.csv");
+        c.gridx = 1;
+        c.gridy = 7;
+        c.weightx = 0.5;
+        c.gridwidth = 1;
+        pane1.add(buttonCustomLoad, c);
+
         buttonClean = new JButton("Reset");
         c.gridx = 2;
         c.gridy = 6;
@@ -238,6 +279,9 @@ public class GUI extends JFrame implements ActionListener {
         buttonRemove.addActionListener(this);
         buttonClean.addActionListener(this);
         buttonRefresh.addActionListener(this);
+        buttonCustomLoad.addActionListener(this);
+
+
 
         return pane1;
     }

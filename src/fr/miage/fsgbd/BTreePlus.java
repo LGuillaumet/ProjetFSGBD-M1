@@ -40,10 +40,23 @@ public class BTreePlus<Type> implements java.io.Serializable {
     }
 
 
+
     public boolean addValeur(Type valeur) {
         System.out.println("Ajout de la valeur : " + valeur.toString());
         if (racine.contient(valeur) == null) {
             Noeud<Type> newRacine = racine.addValeur(valeur);
+            if (racine != newRacine)
+                racine = newRacine;
+            return true;
+        }
+        return false;
+    }
+
+
+    public boolean addValeur(Type valeur, int index) {
+        System.out.println("Ajout de la valeur : " + valeur.toString() + " index : "+ index);
+        if (racine.contient(valeur) == null) {
+            Noeud<Type> newRacine = racine.addValeur(valeur, index);
             if (racine != newRacine)
                 racine = newRacine;
             return true;
