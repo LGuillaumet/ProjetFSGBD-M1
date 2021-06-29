@@ -12,6 +12,8 @@ import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static fr.miage.fsgbd.Noeud.mapPointeurs;
+
 
 /**
  * @author Galli Gregory, Mopolo Moke Gabriel
@@ -91,12 +93,13 @@ public class GUI extends JFrame implements ActionListener {
                                 String[] splitted = currentLine.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
                                 Integer index = Integer.valueOf(splitted[0]);
                                 Integer key = Integer.valueOf(splitted[1]);
-
                                 // read next line
                                 currentLine = reader.readLine();
                             bInt.addValeur(key,index);
                         }
-                        // line is not visible here.
+                    System.out.println("mapPointeurs(index, key):  "+ mapPointeurs);
+
+                    // line is not visible here.
                     } catch (IOException ioException) {
                         ioException.printStackTrace();
                     }

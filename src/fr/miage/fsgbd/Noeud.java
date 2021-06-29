@@ -1,6 +1,7 @@
 package fr.miage.fsgbd;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap; // import the HashMap class
 
 
@@ -17,8 +18,7 @@ public class Noeud<Type> implements java.io.Serializable {
 
     // Collection des clés du noeud courant
     public ArrayList<Type> keys = new ArrayList<Type>();
-    public HashMap<Type, Integer> mapPointeurs = new HashMap<Type, Integer>();
-
+    public static HashMap<Integer, Integer> mapPointeurs = new HashMap<Integer, Integer>();
 
     // Noeud Parent du noeud courant
     private Noeud<Type> parent;
@@ -135,14 +135,16 @@ public class Noeud<Type> implements java.io.Serializable {
         this.keys.add(i, valeur);
     }
 
-
+    //Nouveau insert qui va associé à chaque clé son index dans le HashMap
     private void insert(Type valeur, int index) {
         int i = 0;
         while ((this.keys.size() > i) && compare(this.keys.get(i), valeur)) {
             i++;
         }
         this.keys.add(i, valeur);
-        this.mapPointeurs.put(valeur, index);
+        this.mapPointeurs.put((Integer) valeur, index);
+
+
     }
 
     /**
@@ -549,7 +551,6 @@ public class Noeud<Type> implements java.io.Serializable {
             } else // Si le nombre de clefs dans le noeud n'est pas au max, on ajoute simplement la clef au noeud courant
                 noeud.insert(nouvelleValeur);
         }
-
         return racine;
     }
 

@@ -73,4 +73,8 @@ public class BTreePlus<Type> implements java.io.Serializable {
                 racine = newRacine;
         }
     }
+
+    public void getDataFromIndex() {
+        
+    }
 }
