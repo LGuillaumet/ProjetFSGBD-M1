@@ -92,7 +92,6 @@ public class BTreePlus<Type> implements java.io.Serializable {
     }
 
     public void getDataFromIndex(int key) {
-        afficheArbre();
         if(mapPointeurs.isEmpty()){
             System.out.println("Veuillez d'abord charger le fichier");
         }
