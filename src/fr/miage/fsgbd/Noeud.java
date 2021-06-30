@@ -20,6 +20,8 @@ public class Noeud<Type> implements java.io.Serializable {
     public ArrayList<Type> keys = new ArrayList<Type>();
     public static HashMap<Integer, Integer> mapPointeurs = new HashMap<Integer, Integer>();
 
+    public ArrayList <Noeud<Type>> refLeafs;
+
     // Noeud Parent du noeud courant
     private Noeud<Type> parent;
 
@@ -142,9 +144,6 @@ public class Noeud<Type> implements java.io.Serializable {
             i++;
         }
         this.keys.add(i, valeur);
-        this.mapPointeurs.put((Integer) valeur, index);
-
-
     }
 
     /**

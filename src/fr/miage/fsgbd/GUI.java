@@ -21,8 +21,8 @@ import static fr.miage.fsgbd.Noeud.mapPointeurs;
 public class GUI extends JFrame implements ActionListener {
     TestInteger testInt = new TestInteger();
     BTreePlus<Integer> bInt;
-    private JButton buttonClean, buttonRemove, buttonLoad, buttonCustomLoad, buttonSave, buttonAddMany, buttonAddItem, buttonRefresh;
-    private JTextField txtNbreItem, txtNbreSpecificItem, txtU, txtFile, removeSpecific;
+    private JButton buttonClean, buttonRemove, buttonLoad, buttonCustomLoad, buttonSave, buttonAddMany, buttonAddItem, buttonRefresh, buttonFind, buttonBenchmark;
+    private JTextField txtNbreItem, txtNbreSpecificItem, txtU, txtFile, removeSpecific, IndexfromKey;
     private final JTree tree = new JTree();
 
     private final String customFile = "sample.csv";
@@ -97,7 +97,7 @@ public class GUI extends JFrame implements ActionListener {
                                 currentLine = reader.readLine();
                             bInt.addValeur(key,index);
                         }
-                    System.out.println("mapPointeurs(index, key):  "+ mapPointeurs);
+                    System.out.println("mapPointeurs(key, index):  "+ mapPointeurs);
 
                     // line is not visible here.
                     } catch (IOException ioException) {
@@ -106,8 +106,25 @@ public class GUI extends JFrame implements ActionListener {
 
 
                 }
+            else if (e.getSource() == buttonFind) {
+                    System.out.println("Tentative de recherche : " + IndexfromKey.getText());
+                bInt.getDataFromIndex(Integer.parseInt(IndexfromKey.getText()));
+                IndexfromKey.setText(
+                        String.valueOf(
+                                Integer.parseInt(IndexfromKey.getText())
+                        )
+                );
 
+            }
+            else if (e.getSource() == buttonBenchmark) {
+                System.out.println("Benchmark 100 recherches");
+                try {
+                    bInt.benchmark(bInt);
+                } catch (IOException | InterruptedException ioException) {
+                    ioException.printStackTrace();
+                }
 
+            }
 
 
         }
@@ -242,10 +259,38 @@ public class GUI extends JFrame implements ActionListener {
 
         buttonCustomLoad = new JButton("Charger fichier custom sample.csv");
         c.gridx = 1;
-        c.gridy = 7;
+        c.gridy = 6;
         c.weightx = 0.5;
         c.gridwidth = 1;
         pane1.add(buttonCustomLoad, c);
+
+        JLabel findIndexfromKey = new JLabel("Recherche custom: ");
+        c.gridx = 0;
+        c.gridy = 8;
+        c.weightx = 0.5;
+        c.gridwidth = 1;
+        pane1.add(findIndexfromKey, c);
+
+        IndexfromKey = new JTextField("0", 8);
+        c.gridx = 1;
+        c.gridy = 8;
+        c.weightx = 1;
+        c.gridwidth = 1;
+        pane1.add(IndexfromKey, c);
+
+        buttonFind = new JButton("Chercher");
+        c.gridx = 2;
+        c.gridy = 8;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        pane1.add(buttonFind, c);
+
+        buttonBenchmark = new JButton("Benchmark recherches x100");
+        c.gridx = 1;
+        c.gridy = 9;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        pane1.add(buttonBenchmark, c);
 
         buttonClean = new JButton("Reset");
         c.gridx = 2;
@@ -266,7 +311,7 @@ public class GUI extends JFrame implements ActionListener {
         c.weighty = 1.0;   //request any extra vertical space
         c.gridwidth = 4;   //2 columns wide
         c.gridx = 0;
-        c.gridy = 8;
+        c.gridy = 10;
 
         JScrollPane scrollPane = new JScrollPane(tree);
         pane1.add(scrollPane, c);
@@ -283,6 +328,9 @@ public class GUI extends JFrame implements ActionListener {
         buttonClean.addActionListener(this);
         buttonRefresh.addActionListener(this);
         buttonCustomLoad.addActionListener(this);
+        buttonFind.addActionListener(this);
+        buttonBenchmark.addActionListener(this);
+
 
 
 
